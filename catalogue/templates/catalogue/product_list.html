@@ -1,0 +1,77 @@
+{% extends 'catalogue/base.html' %}
+
+{% block main_content %}
+    <div class="album py-1 bg-light">
+        <section class="text-center container">
+            <div class="col-lg-6 col-md-8 mx-auto">
+                <h2 class="fw-light">Products</h2>
+            </div>
+        </section>
+        <div class="container">
+            <div class="container p-4">
+                <div class="row">
+                    {% for product in products %}
+                        <div class="col-lg-4 col-md-6 col-sm-12 pb-4">
+                            <div class="card h-100 p-4">
+                                <img class="lazy"
+                                     src="http://localhost:8082/media/{{ product.images.0 }}"
+                                     class="card-img-top"
+                                     alt="{{ product.name }}"
+                                     style="width: auto; height: 350px; object-fit: contain;">
+                                <br>
+                                <h4>{{ product.name }}</h4>
+                                <p class="text-muted">Category
+                                    | {{ product.category }}</p>
+                                <h3 style="color: #873600">
+                                    <b> $ {{ product.price }}</b>
+                                </h3>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <!--Pagination-->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    {% if products.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?page={{ products.previous_page_number }}">Previous</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1"
+                               aria-disabled="true">Previous</a>
+                        </li>
+                    {% endif %}
+                    {% for i in products.paginator.page_range %}
+                        {% if products.number == i %}
+                            <li class="page-item active" aria-current="page">
+                                    <span class="page-link">
+                                        {{ i }}
+                                        <span class="sr-only">(current)</span>
+                                    </span>
+                            </li>
+                        {% else %}
+                            <li class="page-item"><a class="page-link"
+                                                     href="?page={{ i }}">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if products.has_next %}
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="?page={{ products.next_page_number }}">Next</a>
+                        </li>
+                    {% else %}
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1"
+                               aria-disabled="true">Next</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            <!--end of Pagination-->
+        </div>
+    </div>
+{% endblock main_content %}
